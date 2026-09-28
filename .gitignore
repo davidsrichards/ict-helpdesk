@@ -1,0 +1,64 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+# Real, secret env files are gitignored; `.env.test` (deterministic local
+# Supabase keys) and the `*.example` templates stay committed.
+.env.local
+.env*.local
+
+# Local self-hosted instances (vendored official supabase compose + .env +
+# data volumes). Machine-local only — never commit.
+/deploy/local/
+
+# Per-instance deploy secrets (real .env alongside the committed *.example
+# templates). Hold POSTGRES_PASSWORD / SERVICE_ROLE_KEY / SMTP_PASS — never commit.
+/deploy/**/.env
+
+# testing
+playwright-report/
+test-results/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+playwright-results.json
+*.log
+
+# migration
+/migration/
+
+.claude/
+package-lock.json

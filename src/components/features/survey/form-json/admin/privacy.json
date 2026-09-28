@@ -1,0 +1,29 @@
+{
+  "showQuestionNumbers": "off",
+  "pages": [
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "ticket_default_privacy",
+          "title": "Default Ticket Privacy",
+          "choices": [
+            { "value": "true", "text": "Private by default" },
+            { "value": "false", "text": "Public by default" }
+          ]
+        },
+        {
+          "type": "boolean",
+          "name": "allow_user_privacy_control",
+          "title": "Allow users to change ticket privacy",
+          "description": "Lets users choose privacy when creating a ticket. Users on a tier with the Visibility capability can also change privacy on existing tickets, regardless of this setting."
+        },
+        {
+          "type": "boolean",
+          "name": "allow_public_ticket_browsing",
+          "title": "Allow public access for unauthenticated visitors"
+        }
+      ]
+    }
+  ]
+}
