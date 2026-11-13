@@ -75,7 +75,7 @@ The project already contains the full database setup in one file. The easiest wa
 
 If you see an error, copy the exact error text and fix it before moving on. A common one is an extension that is not enabled. Go to **Database -> Extensions**, enable it, and run the query again.
 
-Do **not** run `supabase/seed.sql` online. It creates fake test users with the password `Password123`. You will create real accounts instead in Part 5.
+Do **not** run `supabase/seed.sql` online. It creates fake test users with the password `Password123`. You will create real accounts instead in Part 5. The small file `supabase/production-seed.sql` is the safe one to run (see Part 5).
 
 ### 2.4 Check the storage bucket
 
@@ -162,9 +162,7 @@ Because the database is empty, there are no users yet.
    ```
 
 3. Log out and log in again. You should now see **Admin Settings** in the top menu.
-4. Under **Admin Settings -> Ticket Types** and **Categories**, create the types and categories you want (for example "Network", "Software", "Hardware", "Email / Account").
-
-   Tickets cannot be created until at least one ticket type exists.
+4. Ticket types (Question, Issue, Suggestion) already exist from the schema file, so students can submit tickets straight away. To add ICT categories and switch on the Help Center in one go, open `supabase/production-seed.sql`, copy it into the Supabase **SQL Editor**, and click **Run**. You can edit or add more under **Admin Settings -> Categories** later.
 
 5. To make staff members agents: ask them to sign up, then in the admin area go to **Agents & Admins**, or run:
 
@@ -197,7 +195,7 @@ In Vercel: **Project -> Settings -> Domains**, add your domain and follow the DN
 | Sign up says "check your email" but no email arrives | "Confirm email" is on. Turn it off (step 2.6) or set up SMTP. |
 | Password reset link goes to `localhost` | The Supabase Site URL is still the default. Fix it in step 2.5. |
 | Pages show errors about missing tables | The schema in step 2.3 did not run fully. Run it again and read any error. |
-| You cannot create a ticket | No ticket type exists. Add one in Admin Settings -> Ticket Types. |
+| You cannot create a ticket | Check that the ticket types exist (Admin Settings -> Ticket Types). The schema file creates three by default. |
 | File upload fails | The `attachments` storage bucket is missing (step 2.4). |
 | The site works but admin links are missing | Your account is not an admin yet. Run the SQL in Part 5 and log in again. |
 
@@ -215,4 +213,4 @@ In Vercel: **Project -> Settings -> Domains**, add your domain and follow the DN
 - [ ] Supabase Site URL and Redirect URL set to the live address
 - [ ] "Confirm email" turned off (or SMTP set up)
 - [ ] First account signed up and promoted to admin
-- [ ] Ticket types and categories created
+- [ ] `production-seed.sql` run (categories and Help Center)

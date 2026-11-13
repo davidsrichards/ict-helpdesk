@@ -19,8 +19,6 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     links: [
       { label: 'User Management', href: '/admin/users', description: 'View, search and manage all accounts.' },
       { label: 'Agents & Admins', href: '/admin/agents', description: 'Assign staff roles and permissions.' },
-      { label: 'Teams', href: '/admin/teams', description: 'Group users and agents into teams.' },
-      { label: 'Subscription Tiers', href: '/admin/tiers', description: 'Configure user tiers and priorities.' },
     ],
   },
   {
@@ -29,7 +27,7 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     links: [
       { label: 'SLA Policies', href: '/admin/sla', description: 'Set response and resolution targets.' },
       { label: 'CSAT Settings', href: '/admin/csat', description: 'Configure satisfaction surveys.' },
-      { label: 'Templates', href: '/admin/templates', description: 'Reusable ticket templates.' },
+      { label: 'Notification Templates', href: '/admin/templates', description: 'Edit the wording of automatic emails and notifications.' },
     ],
   },
   {
@@ -37,7 +35,6 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
     links: [
       { label: 'Email', href: '/admin/email', description: 'Outgoing email and notification delay.' },
-      { label: 'Inbound Email', href: '/admin/inbound-email', description: 'Create tickets from incoming mail.' },
       { label: 'AI Configuration', href: '/admin/ai', description: 'AI summaries and suggested replies.' },
     ],
   },
@@ -50,16 +47,14 @@ export const ADMIN_GROUPS: AdminGroup[] = [
     heading: 'System Limits & Uploads',
     icon: 'M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4',
     links: [
-      { label: 'Pagination', href: '/admin/pagination', description: 'Items per page across lists.' },
       { label: 'Rate Limit', href: '/admin/rate-limit', description: 'Prevent ticket flooding.' },
       { label: 'File Uploads', href: '/admin/file-settings', description: 'Allowed file types and sizes.' },
     ],
   },
   {
-    heading: 'Appearance & UX',
+    heading: 'User Experience',
     icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
     links: [
-      { label: 'Survey Templates', href: '/admin/survey-templates', description: 'Customise ticket page layouts.' },
       { label: 'User Settings', href: '/admin/user-settings', description: 'Defaults for new user accounts.' },
     ],
   },
