@@ -1,115 +1,28 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 import { signup, type AuthState } from '@/lib/actions/auth';
-import { createBrowserClient } from '@/lib/supabase/client';
-import { signInWithExternalProvider } from '@/lib/supabase/external-sign-in';
-import type { PublicAuthConfig } from '@/lib/actions/auth-config';
+import {
+  errorAlertClass,
+  inputClass,
+  labelClass,
+  linkClass,
+  primaryButtonClass,
+} from '@/components/ui/form-styles';
 
 const initialState: AuthState = {};
 
-const PROVIDER_LABELS: Record<string, string> = {
-  google: 'Google',
-  github: 'GitHub',
-  microsoft: 'Microsoft',
-  gitlab: 'GitLab',
-};
-
-const SUPABASE_PROVIDER_MAP: Record<string, string> = {
-  google: 'google',
-  github: 'github',
-  microsoft: 'azure',
-  gitlab: 'gitlab',
-};
-
-function SocialButton({ provider, label }: { provider: string; label: string }) {
-  async function handleClick() {
-    const supabase = createBrowserClient();
-    const redirectTo = `${window.location.origin}/auth/callback`;
-    await supabase.auth.signInWithOAuth({
-      provider: SUPABASE_PROVIDER_MAP[provider] as 'google' | 'github' | 'azure' | 'gitlab',
-      options: { redirectTo },
-    });
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      data-testid={`social-signup-${provider}`}
-    >
-      Sign up with {label}
-    </button>
-  );
-}
-
-function ExternalButton({ providerName }: { providerName: string }) {
-  const [error, setError] = useState('');
-
-  async function handleClick() {
-    const result = await signInWithExternalProvider(createBrowserClient());
-    setError(result.error ?? '');
-  }
-
-  return (
-    <>
-      {error && (
-        <div
-          role="alert"
-          className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-700 text-sm"
-          data-testid="external-login-error"
-        >
-          {error}
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={handleClick}
-        className="w-full bg-blue-600 text-white rounded py-2 px-4 text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        data-testid="external-signup-btn"
-      >
-        Sign in with {providerName || 'External Provider'}
-      </button>
-    </>
-  );
-}
-
-export function SignupForm({ config }: { config: PublicAuthConfig }) {
+export function SignupForm() {
   const [state, formAction, pending] = useActionState(signup, initialState);
 
-  // External mode: no signup form
-  if (config.authMode === 'external') {
-    return (
-      <>
-        <h1 className="text-2xl font-semibold text-gray-900 mb-4">Sign up</h1>
-        <p className="text-sm text-gray-600 mb-6">
-          Account creation is managed by your organization&apos;s identity provider.
-        </p>
-        {config.externalRegistered ? (
-          <ExternalButton providerName={config.externalProviderName} />
-        ) : (
-          <p className="text-sm text-gray-600" data-testid="external-not-configured">
-            External sign-in is not configured. Contact your administrator.
-          </p>
-        )}
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:text-blue-800 underline">Log in</a>
-        </p>
-      </>
-    );
-  }
-
-  // Built-in mode: standard signup + social buttons
   if (state.message) {
     return (
       <>
-        <h1 className="text-2xl font-semibold text-gray-900 mb-4">Check your email</h1>
-        <p className="text-gray-600 text-sm">{state.message}</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-3">Check your email</h1>
+        <p className="text-sm text-gray-600">{state.message}</p>
         <div className="mt-6">
-          <a href="/login" className="text-sm text-blue-600 hover:text-blue-800 underline">
-            Back to log in
+          <a href="/login" className={`text-sm ${linkClass}`}>
+            Back to sign in
           </a>
         </div>
       </>
@@ -118,16 +31,17 @@ export function SignupForm({ config }: { config: PublicAuthConfig }) {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Sign up</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
+      <p className="mt-1 mb-6 text-sm text-gray-600">Register to submit and follow ICT support tickets.</p>
       {state.error && (
-        <div role="alert" className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-700 text-sm">
+        <div role="alert" className={errorAlertClass}>
           {state.error}
         </div>
       )}
       <form action={formAction} className="space-y-4">
         <div>
-          <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-1">
-            Display name
+          <label htmlFor="displayName" className={labelClass}>
+            Full name
           </label>
           <input
             id="displayName"
@@ -135,11 +49,11 @@ export function SignupForm({ config }: { config: PublicAuthConfig }) {
             type="text"
             maxLength={100}
             autoComplete="name"
-            className="block w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+            className={inputClass}
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className={labelClass}>
             Email
           </label>
           <input
@@ -149,11 +63,11 @@ export function SignupForm({ config }: { config: PublicAuthConfig }) {
             required
             maxLength={320}
             autoComplete="email"
-            className="block w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+            className={inputClass}
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className={labelClass}>
             Password
           </label>
           <input
@@ -163,14 +77,14 @@ export function SignupForm({ config }: { config: PublicAuthConfig }) {
             required
             minLength={8}
             autoComplete="new-password"
-            className="block w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+            className={inputClass}
           />
           <p className="mt-1 text-xs text-gray-500">
             At least 8 characters, 1 uppercase, 1 lowercase, and 1 digit.
           </p>
         </div>
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="confirmPassword" className={labelClass}>
             Confirm password
           </label>
           <input
@@ -180,44 +94,19 @@ export function SignupForm({ config }: { config: PublicAuthConfig }) {
             required
             minLength={8}
             autoComplete="new-password"
-            className="block w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+            className={inputClass}
           />
         </div>
-        <button
-          type="submit"
-          disabled={pending}
-          className="w-full bg-blue-600 text-white rounded py-2 px-4 text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-        >
-          {pending ? 'Creating account…' : 'Sign up'}
+        <button type="submit" disabled={pending} className={primaryButtonClass}>
+          {pending ? 'Creating account…' : 'Create account'}
         </button>
       </form>
 
-      {/* Social provider buttons */}
-      {config.enabledSocialProviders.length > 0 && (
-        <div className="mt-6">
-          <div className="relative mb-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or continue with</span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            {config.enabledSocialProviders.map((provider) => (
-              <SocialButton
-                key={provider}
-                provider={provider}
-                label={PROVIDER_LABELS[provider] ?? provider}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      <p className="mt-4 text-sm text-center text-gray-600">
+      <p className="mt-6 text-center text-sm text-gray-600">
         Already have an account?{' '}
-        <a href="/login" className="text-blue-600 hover:text-blue-800 underline">Log in</a>
+        <a href="/login" className={linkClass}>
+          Sign in
+        </a>
       </p>
     </>
   );

@@ -6,8 +6,26 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-blue-50: #f0f9f2;
+  --color-blue-100: #dcf1e0;
+  --color-blue-200: #bbe2c3;
+  --color-blue-300: #8ccd9b;
+  --color-blue-400: #56b06c;
+  --color-blue-500: #2f9249;
+  --color-blue-600: #237a3a;
+  --color-blue-700: #1d6130;
+  --color-blue-800: #1a4d2a;
+  --color-blue-900: #163f24;
+  --color-blue-950: #0a2413;
+  --color-gold-300: #f6d675;
+  --color-gold-400: #f0c240;
+  --color-gold-500: #e0a916;
+  --color-gold-600: #b98510;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   /*
    * Prevent stray horizontal scrolling caused by full-bleed sections that
    * use the `w-screen` (100vw) breakout pattern (e.g. the ticket detail

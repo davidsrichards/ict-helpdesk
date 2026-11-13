@@ -4,15 +4,21 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { isActivePath } from './nav-utils';
+import { signOut } from '@/lib/actions/auth';
 import { notifyPopupOpened, subscribeToOtherPopups } from '@/lib/utils/popup-coordinator';
 
 const POPUP_ID = 'mobile-menu';
 
+type MenuLink = { href: string; label: string };
+
 interface MobileMenuProps {
-  links: { href: string; label: string }[];
+  links: MenuLink[];
+  userLinks?: MenuLink[];
+  displayName?: string;
+  role?: string | null;
 }
 
-export function MobileMenu({ links }: MobileMenuProps) {
+export function MobileMenu({ links, userLinks = [], displayName, role }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -51,6 +57,11 @@ export function MobileMenu({ links }: MobileMenuProps) {
     });
   }
 
+  const linkClass = (active: boolean) =>
+    `block px-4 py-3 min-h-[44px] text-sm focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 focus-visible:outline-none ${
+      active ? 'bg-blue-50 text-blue-800 font-semibold' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+    }`;
+
   return (
     <div ref={menuRef} className="md:hidden">
       <button
@@ -74,7 +85,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
       {open && (
         <nav
           id="mobile-nav-menu"
-          className="absolute left-0 right-0 top-full bg-white border-b border-gray-200 shadow-lg z-50 py-2"
+          className="absolute left-0 right-0 top-full z-50 max-h-[80vh] overflow-y-auto border-b border-gray-200 bg-white py-2 shadow-lg"
           aria-label="Mobile navigation"
         >
           <ul className="flex flex-col">
@@ -84,11 +95,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`block px-4 py-3 min-h-[44px] text-sm focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 focus-visible:outline-none ${
-                      active
-                        ? 'bg-blue-50 text-blue-700 font-medium'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
+                    className={linkClass(active)}
                     aria-current={active ? 'page' : undefined}
                     onClick={() => setOpen(false)}
                   >
@@ -98,6 +105,38 @@ export function MobileMenu({ links }: MobileMenuProps) {
               );
             })}
           </ul>
+          {userLinks.length > 0 && (
+            <div className="mt-2 border-t border-gray-100 pt-2">
+              <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                {displayName}
+                {role && role !== 'user' ? ` · ${role}` : ''}
+              </p>
+              <ul className="flex flex-col">
+                {userLinks.map((link) => {
+                  const active = isActivePath(pathname, link.href);
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className={linkClass(active)}
+                        aria-current={active ? 'page' : undefined}
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+                <li>
+                  <form action={signOut}>
+                    <button type="submit" className={`w-full text-left ${linkClass(false)}`}>
+                      Sign out
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          )}
         </nav>
       )}
     </div>

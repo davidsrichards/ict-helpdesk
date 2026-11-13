@@ -6,8 +6,8 @@ import "survey-core/survey-core.css";
 import "@/styles/surveyjs-bridge.css";
 
 export const metadata: Metadata = {
-  title: "HelpDesk",
-  description: "Customer support ticket system",
+  title: { default: "NSUK ICT Helpdesk", template: "%s | NSUK ICT Helpdesk" },
+  description: "ICT support ticketing system for Nasarawa State University, Keffi",
 };
 
 export default function RootLayout({

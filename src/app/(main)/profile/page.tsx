@@ -64,17 +64,7 @@ export default async function ProfilePage() {
     .single();
   const enforceUniqueness = uniqueSetting?.value === 'true';
 
-  // Check auth mode (external mode hides password form)
-  const { data: authModeSetting } = await supabase
-    .from('app_settings')
-    .select('value')
-    .eq('key', 'auth_mode')
-    .single();
-  const isExternalAuth = authModeSetting?.value === 'external';
-
-  // Check if user authenticated via social OAuth provider (hide password change)
-  const isSocialAuth = user.app_metadata?.provider && user.app_metadata.provider !== 'email';
-  const showPasswordForm = !isExternalAuth && !isSocialAuth;
+  const showPasswordForm = true;
 
   const isAgentOrAdmin = profile.role === 'agent' || profile.role === 'admin';
 

@@ -11,7 +11,7 @@ type Role = 'admin' | 'agent' | string;
 function RoleBadge({ role }: { role: Role }) {
   if (role === 'admin') {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gold-300/40 text-gold-600">
         Admin
       </span>
     );
@@ -70,7 +70,7 @@ export function UserMenu({ displayName, role, links }: UserMenuProps) {
   return (
     <details ref={detailsRef} className="relative">
       <summary
-        className="flex items-center gap-2 cursor-pointer list-none text-sm text-gray-700 hover:text-gray-900 min-h-[44px] px-2 rounded focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+        className="flex items-center gap-2 cursor-pointer list-none text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 min-h-10 px-3 rounded-lg transition focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none"
         aria-label={`User menu for ${displayName}`}
         aria-haspopup="true"
       >
@@ -88,7 +88,7 @@ export function UserMenu({ displayName, role, links }: UserMenuProps) {
         </svg>
       </summary>
       <div
-        className="absolute right-0 mt-2 w-48 bg-white rounded border border-gray-200 shadow-lg py-1 z-50"
+        className="absolute right-0 mt-2 w-56 bg-white rounded-xl border border-gray-200 shadow-lg py-1 z-50"
         role="menu"
       >
         {links.map((link) => (
